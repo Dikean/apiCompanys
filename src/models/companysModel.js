@@ -9,4 +9,5 @@ exports.allDataCompanys = async () => {
     }
 
     
+    
 };

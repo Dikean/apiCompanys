@@ -9,6 +9,15 @@ exports.getAllUsersCompanies = async (req, res) => {
     }
 };
 
+exports.getAsociateByUserCompany = async (req, res) => {
+    try {
+        const usersCompanies = await usersCompanyModel.userAsociateByCompany();
+        res.json(usersCompanies);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
 exports.deleteUser = async (req, res) => {
     try {
         // Lógica para eliminar un usuario
