@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Archivos de entorno
+.env
+
+# Directorios de logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directorios de compilación y salida
+build/
+dist/
+
+# Otros archivos y directorios que se deben ignorar
+.DS_Store
+.idea/
+.vscode/
