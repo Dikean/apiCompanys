@@ -5,11 +5,12 @@ const mysql = require('mysql2');
 const app = express();
 // Configuración de la base de datos
 const pool = mysql.createPool({
-    host: 'smilesonline.online',
-    user: 'u958352070_Api_Conta',
-    password:  '9&Bfj75w',
-    database:  'u958352070_Api_GeneralCon'
+  host: 'srv957.hstgr.io',
+  user: 'u958352070_Dikean',
+  password: '5JqtxZ!/A#',
+  database: 'u958352070_ApiCompany',
 });
+
 
 // Conexión al pool de conexiones
 const db = pool.promise(); // Usar el pool en modo promesa
