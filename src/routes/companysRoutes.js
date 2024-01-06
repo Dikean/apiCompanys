@@ -3,7 +3,9 @@ const router = express.Router();
 const companysController = require('../controllers/companysController');
 const checkJwt = require('../middleware/authMiddleware');
 
-router.get('/getAllCompanys',checkJwt, companysController.getAllCompanys);
-// router.post('/createCompanys',checkJwt, companysController.);
+router.get('/getAllCompanys',checkJwt, companysController.getAllCompanys); //obtener todas las compañias
+router.post('/createCompany', checkJwt, companysController.createCompany); //crear comapañia
+router.put('/updateCompany', checkJwt, companysController.updateCompany); //update Company
+router.get('/byUser/:userId', checkJwt, companysController.getCompanysByUser); //company by user
 
 module.exports = router;
