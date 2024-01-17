@@ -33,7 +33,7 @@ exports.createCompany = async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         
          // Imprimir el token en la consola para depuración
-         console.log("Token recibido:", token);
+        //  console.log("Token recibido:", token);
 
         // Crear usuario en Auth0
         const auth0Response = await axios.post('https://dev-w1j3tra2.us.auth0.com/api/v2/users', userData, {
@@ -59,13 +59,14 @@ exports.createCompany = async (req, res) => {
             headers: { 
                 'Content-Type': 'application/json', 
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${tuTokenDeAuth0}`
+                'Authorization': `Bearer ${token}`
               }
               
         });
     
         res.status(201).json({ message: "Company and UserCompany created successfully", CompanyId: companyId });
     } catch (error) {
+        console.log("Error al realizar la solicitud a Auth0:", error.response.data);
         res.status(500).send(error.message);
     }
 };    
