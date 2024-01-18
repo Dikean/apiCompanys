@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 
 // Cargar las variables de entorno
@@ -14,6 +15,9 @@ const app = express();
 
 // Middleware para parsear el body
 app.use(express.json());
+
+// Configurar CORS para permitir solicitudes de cualquier origen
+app.use(cors());
 
 // Usar rutas
 app.use('/api/userscompany', usersCompanyRoutes);
