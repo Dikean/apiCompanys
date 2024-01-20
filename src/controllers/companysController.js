@@ -95,3 +95,13 @@ exports.getCompanysByUser = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+exports.getCompanysByID= async (req, res) => {
+    try {
+        const CompanyId = req.params.CompanyId; // O req.userId si estás obteniendo el ID del usuario de la sesión o token
+        const companys = await companysController.getCompanyById(CompanyId)
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};

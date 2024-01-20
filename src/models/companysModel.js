@@ -59,3 +59,17 @@ exports.getCompanysByUserId = async (userId) => {
         throw error;
     }
 };
+
+exports.getCompanyById = async (companyId) => {
+    try {
+        const query = `
+            SELECT * 
+            FROM Companys
+            WHERE CompanyId = ?
+        `;
+        const [company] = await db.query(query, [companyId]);
+        return company;
+    } catch (error) {
+        throw error;
+    }
+};
