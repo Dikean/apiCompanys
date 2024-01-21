@@ -105,3 +105,13 @@ exports.getCompanysByID= async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+exports.getCompanysByUserIdCity= async (req, res) => {
+    try {
+        const userId = req.params.userId; // O req.userId si estás obteniendo el ID del usuario de la sesión o token
+        const companys = await companysController.getCompanysByUserIdCity(userId);
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};

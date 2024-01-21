@@ -60,6 +60,35 @@ exports.getCompanysByUserId = async (userId) => {
     }
 };
 
+exports.getCompanysByUserIdCity = async (userId) => {
+    try {
+        const query = `
+            SELECT Companys.Ubicacion 
+            FROM Companys
+            JOIN UserCompany ON Companys.CompanyId = UserCompany.CompanyId
+            WHERE UserCompany.UserId = ?
+        `;
+        const [companys] = await db.query(query, [userId]);
+
+        // Calcular los porcentajes
+        const cityCounts = companys.reduce((acc, company) => {
+            acc[company.Ubicacion] = (acc[company.Ubicacion] || 0) + 1;
+            return acc;
+        }, {});
+
+        const total = companys.length;
+        const cityPercentages = Object.keys(cityCounts).map(city => ({
+            city,
+            percentage: (cityCounts[city] / total) * 100
+        }));
+
+        return cityPercentages;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 exports.getCompanyById = async (companyId) => {
     try {
         const query = `

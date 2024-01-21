@@ -6,7 +6,8 @@ const checkJwt = require('../middleware/authMiddleware');
 router.get('/getAllCompanys',checkJwt, companysController.getAllCompanys); //obtener todas las compañias
 router.post('/createCompany', checkJwt, companysController.createCompany); //crear comapañia
 router.put('/updateCompany', checkJwt, companysController.updateCompany); //update Company
-router.get('/byUser/:userId', checkJwt, companysController.getCompanysByUser); //company by user
+router.get('/byUser/:userId',  companysController.getCompanysByUser); //company by user
 router.get('/byCompany/:CompanyId', checkJwt, companysController.getCompanysByID); //company by user
+router.get('/byUserCompanyChart/:userId',  companysController.getCompanysByUserIdCity); //company by user
 
 module.exports = router;
