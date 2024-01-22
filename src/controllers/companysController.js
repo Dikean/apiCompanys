@@ -1,6 +1,7 @@
 const companysController = require('../models/companysModel');
 const axios = require('axios');
 
+
 exports.getAllCompanys = async (req, res) => {
     try {
         const companys = await companysController.allDataCompanys();

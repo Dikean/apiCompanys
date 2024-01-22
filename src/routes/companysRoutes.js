@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const companysController = require('../controllers/companysController');
 const checkJwt = require('../middleware/authMiddleware');
-
+const bucket = require('../utils/configFirebase'); 
 //sorage
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Configura el directorio temporal de almacenamiento
-const bucket = require('../utils/firebaseConfig'); // Asegúrate de que la ruta sea correcta
 
 router.get('/getAllCompanys',checkJwt, companysController.getAllCompanys); //obtener todas las compañias
 router.post('/createCompany', checkJwt, companysController.createCompany); //crear comapañia
