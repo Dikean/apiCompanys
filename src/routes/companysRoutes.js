@@ -14,7 +14,7 @@ router.get('/byUser/:userId', checkJwt, companysController.getCompanysByUser);
 router.get('/byCompany/:CompanyId', checkJwt, companysController.getCompanysByID); 
 router.get('/byUserCompanyChart/:userId', checkJwt, companysController.getCompanysByUserIdCity); 
 
-//storage
-router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
+// //storage
+// router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
 
 module.exports = router;

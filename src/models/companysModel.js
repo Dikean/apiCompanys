@@ -88,7 +88,6 @@ exports.getCompanysByUserIdCity = async (userId) => {
     }
 };
 
-
 exports.getCompanyById = async (companyId) => {
     try {
         const query = `
