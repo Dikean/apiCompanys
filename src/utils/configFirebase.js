@@ -1,10 +1,10 @@
-// const admin = require('firebase-admin');
+const admin = require('firebase-admin');
 
-// const serviceAccount = require('path/to/your-firebase-adminsdk.json');
+const serviceAccount = require('./autoconta-12190-firebase-adminsdk-p8v1v-5adffb4fe4.json');
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   storageBucket: 'gs://autoconta-12190.appspot.com'
-// });
+ admin.initializeApp({
+   credential: admin.credential.cert(serviceAccount),
+   storageBucket: 'gs://autoconta-12190.appspot.com'
+ });
 
-// const bucket = admin.storage().bucket();
+const bucket = admin.storage().bucket();

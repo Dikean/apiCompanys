@@ -101,3 +101,7 @@ exports.getCompanyById = async (companyId) => {
         throw error;
     }
 };
+
+exports.uploadFileToFirebase= async (companyId) => {
+
+}

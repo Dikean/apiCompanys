@@ -106,7 +106,7 @@ exports.getCompanysByID= async (req, res) => {
     }
 };
 
-exports.getCompanysByUserIdCity= async (req, res) => {
+exports.getCompanysByUserIdCity = async (req, res) => {
     try {
         const userId = req.params.userId; // O req.userId si estás obteniendo el ID del usuario de la sesión o token
         const companys = await companysController.getCompanysByUserIdCity(userId);
@@ -116,6 +116,15 @@ exports.getCompanysByUserIdCity= async (req, res) => {
     }
 };
 
+exports.Upload = async (req, res) => {
+    try {
+        const file = req.file;
+        const result = await companysController.uploadFileToFirebase(file);
+        res.send({ fileUrl: result });
+      } catch (error) {
+        res.status(500).send(error);
+      }
+}
 
 //storage
 // exports.Upload= async (req, res) => {
