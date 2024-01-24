@@ -9,7 +9,6 @@ exports.getAllCompanys = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-    
 };
 
 exports.createCompany = async (req, res) => {
@@ -34,7 +33,7 @@ exports.createCompany = async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         
          // Imprimir el token en la consola para depuración
-        //  console.log("Token recibido:", token);
+        console.log("Token recibido:", token);
 
         // Crear usuario en Auth0
         const auth0Response = await axios.post('https://dev-w1j3tra2.us.auth0.com/api/v2/users', userData, {
@@ -48,9 +47,9 @@ exports.createCompany = async (req, res) => {
     
         // Obtener el ID del usuario creado en Auth0
         const auth0UserId = auth0Response.data.user_id;
-    
         // ID del rol a asignar
         const roleId = 'rol_g3SUmI4drIpWyvH3'; // Reemplaza con el ID del rol que quieres asignar
+        
         const roleData = {
             roles: [roleId]
         };
