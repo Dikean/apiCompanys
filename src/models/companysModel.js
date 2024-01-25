@@ -1,4 +1,6 @@
 const db = require('../utils/db');
+const { bucket } = require('../utils/configFirebase'); 
+const fs = require('fs');
 
 exports.allDataCompanys = async () => {
     try {
@@ -102,28 +104,56 @@ exports.getCompanyById = async (companyId) => {
     }
 };
 
-exports.uploadFileToFirebase= async (file) => {
-    const fileName = Date.now() + file.originalname;
-    const fileUpload = bucket.file(fileName);
-  
-    const blobStream = fileUpload.createWriteStream({
-      metadata: {
-        contentType: file.mimetype,
-      },
-    });
-  
-    blobStream.on('error', (error) => {
-      throw new Error('Something is wrong! Unable to upload at the moment.');
-    });
-  
-    blobStream.on('finish', () => {
-      // El archivo se ha subido exitosamente
-      console.log("Subido exitosamente");
-    });
-  
-    blobStream.end(file.buffer);
-  
-    // Obtener URL pública
-    await fileUpload.makePublic();
-    return fileUpload.publicUrl();
-}
+exports.uploadFileToFirebase = async (file, userID) => {
+    try {
+        if (!file) {
+            throw new Error('No file provided');
+        }
+
+        //al agregar al lado el sub del usuario ya lo guarda por carpeta
+        const fileName = 'RepositoryDocumentsCompany/' +Date.now() + file.originalname;
+        const fileUpload = bucket.file(fileName);
+
+        const blobStream = fileUpload.createWriteStream({
+            metadata: {
+                contentType: file.mimetype,
+            },
+        });
+
+        const streamPromise = new Promise((resolve, reject) => {
+            blobStream.on('error', error => reject(error));
+            blobStream.on('finish', () => resolve());
+
+            if (file.buffer) {
+                // Si el archivo se almacena en un buffer
+                console.log("Tamaño del buffer:", file.buffer.length);
+                blobStream.end(file.buffer);
+            } else {
+                // Si el archivo se almacena en el disco
+                const readStream = fs.createReadStream(file.path);
+                readStream.pipe(blobStream);
+            }
+        });
+
+        await streamPromise;
+        await fileUpload.makePublic();
+
+        const publicUrl = await fileUpload.publicUrl();
+
+        // Inserta la ruta del archivo y el userID en la base de datos
+        const query = "INSERT INTO Repository (CompanyId, rutadelarchivo, categoria, UserId, Date) VALUES (?, ?, ?, ?, NOW())";
+        db.query(query, [1, publicUrl, "Rut", 13, "44"], (err, result) => {
+            if (err) throw err;
+            console.log("Registro insertado en la base de datos", result);
+        });
+
+        return publicUrl;
+
+        
+        
+    } catch (error) {
+        console.error('Error al subir archivo a Firebase:', error);
+        throw new Error('Error al subir archivo a Firebase');
+    }
+};
+

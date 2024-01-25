@@ -8,3 +8,6 @@ const serviceAccount = require('./autoconta-12190-firebase-adminsdk-p8v1v-5adffb
  });
 
 const bucket = admin.storage().bucket();
+
+// Exporta el bucket para usarlo en otros archivos
+module.exports = { bucket };
