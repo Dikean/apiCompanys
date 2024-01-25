@@ -102,6 +102,28 @@ exports.getCompanyById = async (companyId) => {
     }
 };
 
-exports.uploadFileToFirebase= async (companyId) => {
-
+exports.uploadFileToFirebase= async (file) => {
+    const fileName = Date.now() + file.originalname;
+    const fileUpload = bucket.file(fileName);
+  
+    const blobStream = fileUpload.createWriteStream({
+      metadata: {
+        contentType: file.mimetype,
+      },
+    });
+  
+    blobStream.on('error', (error) => {
+      throw new Error('Something is wrong! Unable to upload at the moment.');
+    });
+  
+    blobStream.on('finish', () => {
+      // El archivo se ha subido exitosamente
+      console.log("Subido exitosamente");
+    });
+  
+    blobStream.end(file.buffer);
+  
+    // Obtener URL pública
+    await fileUpload.makePublic();
+    return fileUpload.publicUrl();
 }
