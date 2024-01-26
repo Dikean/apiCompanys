@@ -15,15 +15,15 @@ exports.allDataCompanys = async () => {
 exports.insertCompany = async (companyData, userId) => {
     try {
         // Insertar en la tabla Companys
-        const queryCompany = 'INSERT INTO Companys (NameCompany, Date, Codigo, Email, Access_key) VALUES (?, ?, ?, ?, ?)';
-        const valuesCompany = [companyData.NameCompany, companyData.Date, companyData.Codigo, companyData.Email, companyData.Access_key];
+        const queryCompany = 'INSERT INTO Companys (NameCompany, Date, Codigo, Ubicacion, Email, Access_key) VALUES (?, NOW(), ?, ?, ?, ?)';
+        const valuesCompany = [companyData.NameCompany, companyData.Date, companyData.Codigo, companyData.Ubicacion, companyData.Email, companyData.Access_key];
 
         await db.query(queryCompany, valuesCompany);
         const [results] = await db.query('SELECT LAST_INSERT_ID() as CompanyId');
         const companyId = results[0].CompanyId;
 
         // Insertar en la tabla UserCompany
-        const queryUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId) VALUES (?, ?)';
+        const queryUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date) VALUES (?, ?, "Administrator", NOW())';
         const valuesUserCompany = [companyId, userId];
 
         await db.query(queryUserCompany, valuesUserCompany);
