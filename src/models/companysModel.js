@@ -106,7 +106,7 @@ exports.getCompanyById = async (companyId) => {
 
 //storage
 
-exports.uploadFileToFirebase = async (file, companyId) => {
+exports.uploadFileToFirebase = async (file, companyId, UserID) => {
     try {
         if (!file) {
             throw new Error('No file provided');
@@ -144,7 +144,7 @@ exports.uploadFileToFirebase = async (file, companyId) => {
 
         // Inserta la ruta del archivo y el userID en la base de datos
         const query = "INSERT INTO Repository (CompanyId, rutadelarchivo, categoria, UserId, Date) VALUES (?, ?, ?, ?, NOW())";
-        db.query(query, [1, publicUrl, "Rut", 13, "44"], (err, result) => {
+        db.query(query, [companyId, publicUrl, "Rut", UserID], (err, result) => {
             if (err) throw err;
             console.log("Registro insertado en la base de datos", result);
         });
