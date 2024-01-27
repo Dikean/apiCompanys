@@ -13,16 +13,13 @@ exports.getAllCompanys = async (req, res) => {
 
 exports.createCompany = async (req, res) => {
     try {
-     
         const companyData = req.body;
-        const localUserId = companyData.userId; 
-        
-        delete companyData.userId; // Eliminar el userId del objeto companyData
+        const localUserId = req.body.userId; 
 
         const companyId = await companysController.insertCompany(companyData, localUserId);
     
 
-        res.status(201).json({ message: "Company and UserCompany created successfully", CompanyId: companyId ,  CompanyId: Codigo });
+        res.status(201).json({ message: "Company and UserCompany created successfully", CompanyId: companyId });
     } catch (error) {
         console.error("Error al realizar la solicitud a Auth0:", error.response ? error.response.data : error);
         res.status(500).send(error.message);
@@ -71,6 +68,18 @@ exports.getCompanysByUserIdCity = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+//Join one Company
+exports.postJoinOneCompany = async (req, res) => {
+    try {
+        const Codigo = req.params.Codigo; 
+        const companys = await companysController.getCompanysByUserIdCity(Codigo);
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 
 //Storage
 

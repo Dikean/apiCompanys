@@ -15,7 +15,7 @@ exports.allDataCompanys = async () => {
 exports.insertCompany = async (companyData, userId) => {
     try {
         // Insertar en la tabla Companys
-        const queryCompany = 'INSERT INTO Companys (NameCompany, Date, Codigo, Ubicacion, Email, Access_key) VALUES (?, NOW(), ?, ?, ?, ?)';
+        const queryCompany = 'INSERT INTO Companys (NameCompany, Date, Codigo, Ubicacion, Email, Access_key) VALUES (?, ?, ?, ?, ?, ?)';
         const valuesCompany = [companyData.NameCompany, companyData.Date, companyData.Codigo, companyData.Ubicacion, companyData.Email, companyData.Access_key];
 
         await db.query(queryCompany, valuesCompany);
@@ -103,6 +103,9 @@ exports.getCompanyById = async (companyId) => {
         throw error;
     }
 };
+
+//Join One Company
+
 
 //storage
 
