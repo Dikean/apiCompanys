@@ -16,6 +16,7 @@ router.get('/byUserCompanyChart/:userId', checkJwt, companysController.getCompan
 
 //storage
 router.post('/upload', upload.single('file'), companysController.Upload);
+router.get('/getDocuments/:CompanyId', checkJwt, companysController.getDocumentsByIdFirebase);
 
 // router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
 

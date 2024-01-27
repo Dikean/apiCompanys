@@ -104,14 +104,16 @@ exports.getCompanyById = async (companyId) => {
     }
 };
 
-exports.uploadFileToFirebase = async (file, userID) => {
+//storage
+
+exports.uploadFileToFirebase = async (file, companyId) => {
     try {
         if (!file) {
             throw new Error('No file provided');
         }
 
         //al agregar al lado el sub del usuario ya lo guarda por carpeta
-        const fileName = 'RepositoryDocumentsCompany/' +Date.now() + file.originalname;
+        const fileName = `RepositoryDocumentsByCompany/${companyId}/`+Date.now() + file.originalname;
         const fileUpload = bucket.file(fileName);
 
         const blobStream = fileUpload.createWriteStream({
@@ -154,6 +156,20 @@ exports.uploadFileToFirebase = async (file, userID) => {
     } catch (error) {
         console.error('Error al subir archivo a Firebase:', error);
         throw new Error('Error al subir archivo a Firebase');
+    }
+};
+
+exports.getDocumentsByCompany= async (companyId) => {
+    try {
+        const query = `
+            SELECT * 
+            FROM Repository
+            WHERE CompanyId = ?
+        `;
+        const [company] = await db.query(query, [companyId]);
+        return company;
+    } catch (error) {
+        throw error;
     }
 };
 
