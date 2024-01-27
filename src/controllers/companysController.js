@@ -79,7 +79,8 @@ exports.Upload = async (req, res) => {
 
         const file = req.file;
         const companyId = req.body.companyId;
-        const result = await companysController.uploadFileToFirebase(file, companyId);
+        const UserId = req.body.UserId;
+        const result = await companysController.uploadFileToFirebase(file, companyId, UserId);
         res.send({ fileUrl: result });
       } catch (error) {
         res.status(500).send(error);
