@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const axios = require('axios');
-const { Configuration, OpenAI } = require('openai');
+
 // Cargar las variables de entorno
 dotenv.config();
 
@@ -61,29 +61,6 @@ app.get('/get-user-permissions', async (req, res) => {
     }
 });
 
-
-//gpt 
-
-// Configurar la API key y la organización (opcional)
-// const openai = new OpenAI({
-//   apiKey: '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', // Asegúrate de tener tu API key en una variable de entorno
-//   organization: 'org-rhsYIvVA1iplfBLSAMnhSEfM', // Opcional: especifica la organización si perteneces a varias
-// });
-
-
-const openai = new OpenAI(new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  }));
-  
-  async function main() {
-    const chatCompletion = await openai.chatCompletions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: 'user', content: 'Say this is a test' }],
-    });
-    console.log(chatCompletion.data);
-  }
-
-  main();
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

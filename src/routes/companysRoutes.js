@@ -13,8 +13,9 @@ router.put('/updateCompany', checkJwt, companysController.updateCompany); //upda
 router.get('/byUser/:userId', checkJwt, companysController.getCompanysByUser); 
 router.get('/byCompany/:CompanyId', checkJwt, companysController.getCompanysByID); 
 router.get('/byUserCompanyChart/:userId', checkJwt, companysController.getCompanysByUserIdCity); 
-
 router.get('/joinOneCompany', checkJwt, companysController.getCompanysByUserIdCity); 
+
+router.delete('/deletDocumente', checkJwt, companysController.DeleteDoumentByID); 
 
 //storage
 router.post('/upload', upload.single('file'), companysController.Upload);

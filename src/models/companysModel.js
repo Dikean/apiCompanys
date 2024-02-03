@@ -104,12 +104,25 @@ exports.getCompanyById = async (companyId) => {
     }
 };
 
+exports.deleteDocumentById = async (companyId) => {
+    try {
+        const query = `
+        DELETE FROM Repository
+        WHERE RepositoryId = ?        
+        `;
+        const [company] = await db.query(query, [companyId]);
+        return company;
+    } catch (error) {
+        throw error;
+    }
+};
+
 //Join One Company
 
 
 //storage
 
-exports.uploadFileToFirebase = async (file, companyId, UserID) => {
+exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) => {
     try {
         if (!file) {
             throw new Error('No file provided');
@@ -146,8 +159,8 @@ exports.uploadFileToFirebase = async (file, companyId, UserID) => {
         const publicUrl = await fileUpload.publicUrl();
 
         // Inserta la ruta del archivo y el userID en la base de datos
-        const query = "INSERT INTO Repository (CompanyId, rutadelarchivo, categoria, UserId, Date) VALUES (?, ?, ?, ?, NOW())";
-        db.query(query, [companyId, publicUrl, "Rut", UserID], (err, result) => {
+        const query = "INSERT INTO Repository (CompanyId, rutadelarchivo, name, categoria, UserId, Date) VALUES (?, ?, ?, ?, ?, NOW())";
+        db.query(query, [companyId, publicUrl, name, category, UserID], (err, result) => {
             if (err) throw err;
             console.log("Registro insertado en la base de datos", result);
         });

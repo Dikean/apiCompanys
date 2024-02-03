@@ -69,6 +69,17 @@ exports.getCompanysByUserIdCity = async (req, res) => {
     }
 };
 
+exports.DeleteDoumentByID = async (req, res) => {
+    try {
+        const userId = req.body.id; // O req.userId si estás obteniendo el ID del usuario de la sesión o token
+        const companys = await companysController.deleteDocumentById(userId);
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
 //Join one Company
 exports.postJoinOneCompany = async (req, res) => {
     try {
@@ -88,8 +99,10 @@ exports.Upload = async (req, res) => {
 
         const file = req.file;
         const companyId = req.body.companyId;
+        const name = req.body.name;
+        const category = req.body.category;
         const UserId = req.body.UserId;
-        const result = await companysController.uploadFileToFirebase(file, companyId, UserId);
+        const result = await companysController.uploadFileToFirebase(file, companyId, UserId, name, category) ;
         res.send({ fileUrl: result });
       } catch (error) {
         res.status(500).send(error);
