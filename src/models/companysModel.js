@@ -12,11 +12,26 @@ exports.allDataCompanys = async () => {
 
 };
 
+// Función para generar un código aleatorio de 8 caracteres
+async function generateRandomCode(length = 8) {
+    // Definir los caracteres que se pueden incluir
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result; // La función es asíncrona, pero esta operación es síncrona
+}
+
 exports.insertCompany = async (companyData, userId) => {
     try {
+        // Generar un código aleatorio de 8 caracteres de forma asíncrona
+        const randomCode = await generateRandomCode();
+
         // Insertar en la tabla Companys
-        const queryCompany = 'INSERT INTO Companys (NameCompany, Date, Codigo, Ubicacion, Email, Access_key) VALUES (?, ?, ?, ?, ?, ?)';
-        const valuesCompany = [companyData.NameCompany, companyData.Date, companyData.Codigo, companyData.Ubicacion, companyData.Email, companyData.Access_key];
+        const queryCompany = 'INSERT INTO Companys (NameCompany, Codigo, Ubicacion, Email, Access_key) VALUES (?, ?, ?, ?, ?)';
+        const valuesCompany = [companyData.NameCompany, randomCode, companyData.Ubicacion, companyData.Email, companyData.Access_key];
 
         await db.query(queryCompany, valuesCompany);
         const [results] = await db.query('SELECT LAST_INSERT_ID() as CompanyId');
@@ -36,8 +51,9 @@ exports.insertCompany = async (companyData, userId) => {
 
 exports.updateCompany = async (companyId, companyData) => {
     try {
-        const query = 'UPDATE Companys SET NameCompany = ?, Date = ?, Codigo = ?, Email = ?, Access_key = ? WHERE CompanyId = ?';
-        const values = [companyData.NameCompany, companyData.Date, companyData.Codigo, companyData.Email, companyData.Access_key, companyId];
+        const query = 'UPDATE Companys SET NameCompany = ?, Ubicacion = ?,  Email = ?, Access_key = ? WHERE CompanyId = ?';
+        // Asegúrate de que los valores coincidan en orden con los marcadores de posición en la consulta
+        const values = [companyData.NameCompany, companyData.Ubicacion, companyData.Email,  companyData.Access_key, companyId];
 
         // Ejecutar la consulta preparada
         const [results] = await db.query(query, values);
@@ -46,6 +62,7 @@ exports.updateCompany = async (companyId, companyData) => {
         throw error;
     }
 };
+
 
 exports.getCompanysByUserId = async (userId) => {
     try {
@@ -159,8 +176,8 @@ exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) =
         const publicUrl = await fileUpload.publicUrl();
 
         // Inserta la ruta del archivo y el userID en la base de datos
-        const query = "INSERT INTO Repository (CompanyId, rutadelarchivo, name, categoria, UserId, Date) VALUES (?, ?, ?, ?, ?, NOW())";
-        db.query(query, [companyId, publicUrl, name, category, UserID], (err, result) => {
+        const query = "INSERT INTO Repository (CompanyId,  name, rutadelarchivo, categoria, UserId) VALUES (?, ?, ?, ?, ?)";
+        db.query(query, [companyId, "name", publicUrl, "category", UserID], (err, result) => {
             if (err) throw err;
             console.log("Registro insertado en la base de datos", result);
         });
