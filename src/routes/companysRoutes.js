@@ -21,6 +21,10 @@ router.delete('/deletDocumente', checkJwt, companysController.DeleteDoumentByID)
 router.post('/upload', upload.single('file'), companysController.Upload);
 router.get('/getDocuments/:CompanyId', checkJwt, companysController.getDocumentsByIdFirebase);
 
+
+//BotAi Siigo 
+router.get('/BotAi-sales_invoices', companysController.getSalesInvoices);
+
 // router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
 
 module.exports = router;

@@ -63,7 +63,6 @@ exports.updateCompany = async (companyId, companyData) => {
     }
 };
 
-
 exports.getCompanysByUserId = async (userId) => {
     try {
         const query = `
@@ -138,7 +137,6 @@ exports.deleteDocumentById = async (companyId) => {
 
 
 //storage
-
 exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) => {
     try {
         if (!file) {
@@ -204,5 +202,41 @@ exports.getDocumentsByCompany= async (companyId) => {
     } catch (error) {
         throw error;
     }
+};
+
+
+//siigo
+exports.getSalesInvocesSiigo = async (companyId) => {
+    try {
+    
+        const findCompany = await exports.getDocumentsByCompany(companyId);
+
+        const accessKey = findCompany.Access_key; // Asumiendo que esto devuelve el Access_key
+
+        if (!accessKey) {
+            throw new Error('Access_key no encontrado para la compañía');
+        }
+
+        // URL de la API externa
+        const apiUrl = 'https://api.siigo.com/v1/invoices'; // URL de la API externa
+
+        const params = {
+            created_start: '2021-04-07'
+        };
+
+        const response = await axios.get(apiUrl, {
+            params: params,
+            headers: {
+                'Authorization': `Bearer ${accessKey}` // Usar Access_key como Bearer Token
+            }
+        });
+
+        // Aquí manejas la respuesta de la API
+        console.log(response.data);
+        return response.data;
+        
+        } catch (error) {
+            throw error;
+        }
 };
 

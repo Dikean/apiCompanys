@@ -91,7 +91,6 @@ exports.postJoinOneCompany = async (req, res) => {
     }
 }
 
-
 //Storage
 
 exports.Upload = async (req, res) => {
@@ -113,6 +112,17 @@ exports.getDocumentsByIdFirebase = async (req,res)=>{
     try {
         const CompanyID = req.params.CompanyId; // O req.userId si estás obteniendo el ID del usuario de la sesión o token
         const companys = await companysController.getDocumentsByCompany(CompanyID);
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+//Siigo
+exports.getSalesInvoices = async (req, res) => {
+    try {
+        const CompanyId = req.params.CompanyId; 
+        const companys = await companysController.getSalesInvocesSiigo(CompanyId);
         res.json(companys);
     } catch (error) {
         res.status(500).send(error.message);
