@@ -133,9 +133,6 @@ exports.deleteDocumentById = async (companyId) => {
     }
 };
 
-//Join One Company
-
-
 //storage
 exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) => {
     try {
@@ -203,7 +200,6 @@ exports.getDocumentsByCompany= async (companyId) => {
         throw error;
     }
 };
-
 
 //siigo
 exports.getSalesInvocesSiigo = async (companyId) => {
