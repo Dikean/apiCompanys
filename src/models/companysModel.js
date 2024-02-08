@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const { bucket } = require('../utils/configFirebase'); 
 const fs = require('fs');
+const { log } = require('console');
 
 exports.allDataCompanys = async () => {
     try {
@@ -113,6 +114,10 @@ exports.getCompanyById = async (companyId) => {
             FROM Companys
             WHERE CompanyId = ?
         `;
+
+        const token = process.env.OPENAI_TOKEN; // Ahora, 'token' contiene el valor de tu variable de entorno
+        console.log("TOken env"+token);
+
         const [company] = await db.query(query, [companyId]);
         return company;
     } catch (error) {
@@ -227,9 +232,21 @@ exports.getSalesInvocesSiigo = async (companyId) => {
             }
         });
 
-        // Aquí manejas la respuesta de la API
-        console.log(response.data);
-        return response.data;
+        // Aquí manejas la respuesta de la API y envia a Gpt
+    
+                 const token = "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";
+
+                return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(response.data), {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+                })
+                .then(response => response.data) // Devuelve directamente response.data
+                .catch(error => {
+                console.error("Error en la solicitud:", error);
+                throw error; // Propaga el error para manejarlo en el .catch de la llamada
+                });
         
         } catch (error) {
             throw error;
