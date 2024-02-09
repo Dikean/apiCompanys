@@ -1,8 +1,9 @@
 async function obtenerAccessToken() {
+
     const domain = 'dev-w1j3tra2.us.auth0.com';
     const clientId = 'in8vha00TxNfLFN1BbvQIOfCHm1h5SiB';
     const clientSecret = 'IWA9OHErN3vYDQz4ydaMJl664NDU7plE0SBwAd8-_JcIkeA98YIJ-t-rAgNpv3dD';
-    const audience = `https://${domain}/api/v2/`;
+    const audience = `Conta_apiGeneral`;
   
     try {
       const response = await axios.post(`https://${domain}/oauth/token`, new URLSearchParams({
@@ -26,6 +27,8 @@ exports.getPermissions = async (roleIds) => {
     try {
         const domain = 'dev-w1j3tra2.us.auth0.com'; // Reemplaza con tu dominio de Auth0
         const accessToken = await obtenerAccessToken(); // Obtiene el token de acceso
+
+        console.log("token"+accessToken);
    
         // Preparar todas las promesas de llamadas a la API para cada roleId
         const promises = roleIds.map(roleId => {

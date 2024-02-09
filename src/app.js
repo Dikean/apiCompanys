@@ -10,7 +10,7 @@ dotenv.config();
 // Importar rutas
 const usersCompanyRoutes = require('./routes/usersCompanyRoutes');
 const companysController = require('./routes/companysRoutes');
-const companysController = require('./routes/companysRoutes');
+const permissionController = require('./routes/auth0PermissionRoutes');
 
 const db = require('./utils/db');
 
@@ -27,7 +27,7 @@ app.use(cors());
 // Usar rutas
 app.use('/api/userscompany', usersCompanyRoutes);
 app.use('/api/companys', companysController);
-app.use('/api/auth0/getPermissionRole', companysController);
+app.use('/api/auth0/getPermissionRole', permissionController);
 
 
 const PORT = process.env.PORT || 3001;
