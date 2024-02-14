@@ -2,6 +2,7 @@ const db = require('../utils/db');
 const { bucket } = require('../utils/configFirebase'); 
 const fs = require('fs');
 const { log } = require('console');
+const axios = require('axios');
 
 exports.allDataCompanys = async () => {
     try {
@@ -206,13 +207,40 @@ exports.getDocumentsByCompany= async (companyId) => {
     }
 };
 
+
 //siigo
+
+exports.getTokenSiigo = async (username , access_key) => {
+    try {
+
+        const response = await axios.post('https://api.siigo.com/auth', {
+            username: username,
+            access_key: access_key
+        });
+
+        // Suponiendo que el token se devuelve directamente en el cuerpo de la respuesta
+        const token = response.data;
+
+        console.log("Token obtenido:", token);
+        return token;
+    } catch (error) {
+        console.error("Error al obtener el token de Siigo:", error);
+        throw error; // Propaga el error para manejarlo en una capa superior si es necesario
+    }
+};
+
 exports.getSalesInvocesSiigo = async (companyId) => {
     try {
     
-        const findCompany = await exports.getDocumentsByCompany(companyId);
+        const findCompany = await exports.getCompanyById(71);
 
-        const accessKey = findCompany.Access_key; // Asumiendo que esto devuelve el Access_key
+        const username =  findCompany[0].Email;
+        const accessKey = findCompany[0].Access_key;
+
+        //get token siigo by user
+        const tokenSiigo = await exports.getTokenSiigo(username, accessKey );
+
+        console.log("token de siigo:"+ tokenSiigo);
 
         if (!accessKey) {
             throw new Error('Access_key no encontrado para la compañía');

@@ -119,6 +119,17 @@ exports.getDocumentsByIdFirebase = async (req,res)=>{
 }
 
 //Siigo
+exports.getTokenSiigo= async (req, res) => {
+    try {
+        const { username, access_key } = req.body;
+        const companys = await companysController.getTokenSiigo(username, access_key);
+        res.json(companys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
 exports.getSalesInvoices = async (req, res) => {
     try {
         const CompanyId = req.params.CompanyId; 

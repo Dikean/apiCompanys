@@ -25,6 +25,8 @@ router.get('/getDocuments/:CompanyId', checkJwt, companysController.getDocuments
 //BotAi Siigo 
 router.get('/BotAi-sales_invoices', companysController.getSalesInvoices);
 
+router.get('/token', companysController.getTokenSiigo);
+
 // router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
 
 module.exports = router;
