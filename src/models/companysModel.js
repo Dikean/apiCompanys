@@ -209,39 +209,39 @@ exports.getDocumentsByCompany= async (companyId) => {
 
 
 //siigo
-
 exports.getTokenSiigo = async (username , access_key) => {
-    try {
-
-        const response = await axios.post('https://api.siigo.com/auth', {
+     try {
+         const response = await axios.post('https://api.siigo.com/auth', {
             username: username,
             access_key: access_key
         });
 
-        // Suponiendo que el token se devuelve directamente en el cuerpo de la respuesta
-        const token = response.data;
-
-        console.log("Token obtenido:", token);
-        return token;
-    } catch (error) {
-        console.error("Error al obtener el token de Siigo:", error);
-        throw error; // Propaga el error para manejarlo en una capa superior si es necesario
-    }
+         const token = response.data; 
+         return token;
+     } catch (error) {
+         console.error("Error al obtener el token de Siigo:", error);
+         throw error;
+     }
+  
 };
+
 
 exports.getSalesInvocesSiigo = async (companyId) => {
     try {
     
         const findCompany = await exports.getCompanyById(71);
 
-        const username =  findCompany[0].Email;
-        const accessKey = findCompany[0].Access_key;
+        // const username =  findCompany[0].Email;
+        // const accessKey = findCompany[0].Access_key;
+
+           const username = "hotelginebrasincelejo@hotmail.com";
+           const accessKey = "MjJlNDkzMjctN2E0NS00ZmE3LTkwYzQtYmNkNDJjNTlhN2YxOk1+NzVyMVQ/flk="
 
         //get token siigo by user
         const tokenSiigo = await exports.getTokenSiigo(username, accessKey );
-
-        console.log("token de siigo:"+ tokenSiigo);
-
+        // Acceder al access_token y guardarlo en una variable
+        const accessToken = tokenSiigo.access_token;
+        console.log("Token__ "+accessToken);
         if (!accessKey) {
             throw new Error('Access_key no encontrado para la compañía');
         }
@@ -250,34 +250,36 @@ exports.getSalesInvocesSiigo = async (companyId) => {
         const apiUrl = 'https://api.siigo.com/v1/invoices'; // URL de la API externa
 
         const params = {
-            created_start: '2021-04-07'
+            created_start: '2024-02-07'
         };
 
         const response = await axios.get(apiUrl, {
             params: params,
             headers: {
-                'Authorization': `Bearer ${accessKey}` // Usar Access_key como Bearer Token
+                'Authorization': `Bearer ${accessToken}`, // Usar Access_key como Bearer Token
+                'Partner-Id': 'Dikean' // Agregar el header Partner-Id
             }
         });
 
-        // Aquí manejas la respuesta de la API y envia a Gpt
+        console.log("siigo sales invoces"+ response.data);
+         // Aquí manejas la respuesta de la API y envia a Gpt
     
-                 const token = "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";
+        const token = "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";
 
-                return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(response.data), {
+        return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(response.data), {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
-                })
-                .then(response => response.data) // Devuelve directamente response.data
-                .catch(error => {
+         })
+        .then(response => response.data) // Devuelve directamente response.data
+        .catch(error => {
                 console.error("Error en la solicitud:", error);
                 throw error; // Propaga el error para manejarlo en el .catch de la llamada
-                });
+         });
         
-        } catch (error) {
-            throw error;
-        }
+        } catch (error) {       
+         throw error;
+         }
 };
 
