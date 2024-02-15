@@ -234,14 +234,13 @@ exports.getSalesInvocesSiigo = async (companyId) => {
         // const username =  findCompany[0].Email;
         // const accessKey = findCompany[0].Access_key;
 
-           const username = "hotelginebrasincelejo@hotmail.com";
-           const accessKey = "MjJlNDkzMjctN2E0NS00ZmE3LTkwYzQtYmNkNDJjNTlhN2YxOk1+NzVyMVQ/flk="
+        const username = "hotelginebrasincelejo@hotmail.com";
+        const accessKey = "MjJlNDkzMjctN2E0NS00ZmE3LTkwYzQtYmNkNDJjNTlhN2YxOk1+NzVyMVQ/flk="
 
         //get token siigo by user
         const tokenSiigo = await exports.getTokenSiigo(username, accessKey );
         // Acceder al access_token y guardarlo en una variable
         const accessToken = tokenSiigo.access_token;
-        console.log("Token__ "+accessToken);
         if (!accessKey) {
             throw new Error('Access_key no encontrado para la compañía');
         }
@@ -250,7 +249,7 @@ exports.getSalesInvocesSiigo = async (companyId) => {
         const apiUrl = 'https://api.siigo.com/v1/invoices'; // URL de la API externa
 
         const params = {
-            created_start: '2024-02-07'
+            created_start: '2024-02-14'
         };
 
         const response = await axios.get(apiUrl, {
@@ -262,11 +261,25 @@ exports.getSalesInvocesSiigo = async (companyId) => {
         });
 
         console.log("siigo sales invoces"+ response.data);
-         // Aquí manejas la respuesta de la API y envia a Gpt
-    
-        const token = "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";
 
-        return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(response.data), {
+        const data = {
+            model: "gpt-3.5-turbo",
+            messages: [
+              {
+                role: "system",
+                content: "Eres un asistente de negocios para hacer crcer empresas de acuerdo a tu data."
+              },
+              {
+                role: "user",
+                content: "Dame algunos datos del la siguiente data, es decir regreamae algunops json de ejemplo :"+JSON.stringify(response.data)
+              }
+            ]
+          };
+        // Aquí manejas la respuesta de la API y envia a Gpt
+    
+        const token = "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";
+
+        return axios.post(`https://api.openai.com/v1/chat/completions`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
