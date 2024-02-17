@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const axios = require('axios');
-
+const axios = require('axios'); 
 const openai = require('openai');
+
 // Cargar las variables de entorno
 dotenv.config();
 

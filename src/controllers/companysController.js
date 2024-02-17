@@ -132,8 +132,9 @@ exports.getTokenSiigo= async (req, res) => {
 
 exports.getSalesInvoices = async (req, res) => {
     try {
-        const CompanyId = req.params.CompanyId; 
-        const companys = await companysController.getSalesInvocesSiigo(CompanyId);
+        const CompanyId = req.body.CompanyId; 
+        const Messages = req.body.Messages; 
+        const companys = await companysController.getSalesInvocesSiigo(CompanyId, Messages);
         res.json(companys);
     } catch (error) {
         res.status(500).send(error.message);

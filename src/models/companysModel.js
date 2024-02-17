@@ -226,15 +226,15 @@ exports.getTokenSiigo = async (username , access_key) => {
   
 };
 
-
-exports.getSalesInvocesSiigo = async (companyId) => {
+exports.getSalesInvocesSiigo = async (companyId , Menssages) => {
+   
     try {
     
-        const findCompany = await exports.getCompanyById(71);
+        const findCompany = await exports.getCompanyById(companyId);
 
         // const username =  findCompany[0].Email;
         // const accessKey = findCompany[0].Access_key;
-
+        
         const username = "hotelginebrasincelejo@hotmail.com";
         const accessKey = "MjJlNDkzMjctN2E0NS00ZmE3LTkwYzQtYmNkNDJjNTlhN2YxOk1+NzVyMVQ/flk="
 
@@ -268,11 +268,11 @@ exports.getSalesInvocesSiigo = async (companyId) => {
             messages: [
               {
                 role: "system",
-                content: "Eres un asistente de negocios para hacer crcer empresas de acuerdo a tu data."
+                content: "Eres un asistente de negocios para hacer crecer empresas, responde de manera formal y sencilla pero no muy sencilla a los usuarios."
               },
               {
                 role: "user",
-                content: "Dame algunos datos del la siguiente data, es decir regreamae algunops json de ejemplo :"+JSON.stringify(response.data)
+                content: JSON.stringify(response.data)+" Responde deacuerdo a esta data y a la siguiente pregunta que te hago : "+Menssages
               }
             ]
           };

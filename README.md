@@ -1,1 +1,3 @@
 # apiCompanys
+
+  // "type": "module"
