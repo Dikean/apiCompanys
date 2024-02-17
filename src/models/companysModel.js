@@ -194,7 +194,7 @@ exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) =
     }
 };
 
-exports.getDocumentsByCompany= async (companyId) => {
+exports.getDocumentsByCompany = async (companyId) => {
     try {
         const query = `
             SELECT * 
