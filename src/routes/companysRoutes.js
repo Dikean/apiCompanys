@@ -3,7 +3,6 @@ const router = express.Router();
 const companysController = require('../controllers/companysController');
 const checkJwt = require('../middleware/authMiddleware');
 const bucket = require('../utils/configFirebase'); 
-//sorage
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Configura el directorio temporal de almacenamiento
 
@@ -21,11 +20,9 @@ router.delete('/deletDocumente', checkJwt, companysController.DeleteDoumentByID)
 router.post('/upload', upload.single('file'), companysController.Upload);
 router.get('/getDocuments/:CompanyId', checkJwt, companysController.getDocumentsByIdFirebase);
 
-
 //BotAi Siigo 
 router.get('/BotAi-sales_invoices', companysController.getSalesInvoices);
 
-router.get('/token', companysController.getTokenSiigo);
 
 // router.post('/upload', upload.single('file'), checkJwt, companysController.Upload);
 

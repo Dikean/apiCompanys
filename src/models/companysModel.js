@@ -169,6 +169,7 @@ exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) =
                 const readStream = fs.createReadStream(file.path);
                 readStream.pipe(blobStream);
             }
+            
         });
 
         await streamPromise;
