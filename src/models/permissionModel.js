@@ -20,8 +20,7 @@ async function obtenerAccessToken() {
       console.error('Error al obtener el token de acceso:', error);
       throw error;
     }
-  }
-
+}
 
 exports.getPermissions = async (roleIds) => {
     try {

@@ -208,7 +208,6 @@ exports.getDocumentsByCompany = async (companyId) => {
     }
 };
 
-
 //siigo
 exports.getTokenSiigo = async (username , access_key) => {
      try {
