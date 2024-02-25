@@ -80,11 +80,11 @@ exports.DeleteDoumentByID = async (req, res) => {
 };
 
 
-//Join one Company
 exports.postJoinOneCompany = async (req, res) => {
     try {
-        const Codigo = req.params.Codigo; 
-        const companys = await companysController.getCompanysByUserIdCity(Codigo);
+        const Codigo = req.body.Codigo; 
+        const UserID = req.body.UserId; 
+        const companys = await companysController.joinCompany(Codigo,UserID);
         res.json(companys);
     } catch (error) {
         res.status(500).send(error.message);

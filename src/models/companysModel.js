@@ -139,6 +139,28 @@ exports.deleteDocumentById = async (companyId) => {
     }
 };
 
+exports.joinCompany = async(codigo, userId) =>{
+    try {
+        // Paso 1: Verificar si existe el código y obtener el CompanyId
+        const queryCheckCode = 'SELECT CompanyId FROM Companys WHERE Codigo = ?';
+        const [companyResults] = await db.query(queryCheckCode, [codigo]);
+
+        if (companyResults.length > 0) {
+            const companyId = companyResults[0].CompanyId;
+
+            // Paso 2: Insertar en la tabla UserCompany
+            const queryInsertUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date) VALUES (?, ?, "Lector", NOW())';
+            await db.query(queryInsertUserCompany, [companyId, userId]);
+
+            console.log(`Registro insertado correctamente con CompanyId: ${companyId} y UserId: ${userId}`);
+        } else {
+            console.log('El código proporcionado no existe en la tabla Companys.');
+        }
+    } catch (error) {
+        console.error('Error al insertar en UserCompany:', error);
+    }
+};
+
 //storage
 exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) => {
     try {
