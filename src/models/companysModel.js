@@ -3,6 +3,7 @@ const { bucket } = require('../utils/configFirebase');
 const fs = require('fs');
 const { log } = require('console');
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
 
 exports.allDataCompanys = async () => {
     try {
@@ -28,24 +29,25 @@ async function generateRandomCode(length = 8) {
 
 exports.insertCompany = async (companyData, userId) => {
     try {
+        // Generar un UUID para CompanyId
+        const companyId = uuidv4();
+
         // Generar un código aleatorio de 8 caracteres de forma asíncrona
         const randomCode = await generateRandomCode();
 
-        // Insertar en la tabla Companys
-        const queryCompany = 'INSERT INTO Companys (NameCompany, Codigo, Ubicacion, Email, Access_key) VALUES (?, ?, ?, ?, ?)';
-        const valuesCompany = [companyData.NameCompany, randomCode, companyData.Ubicacion, companyData.Email, companyData.Access_key];
+        // Insertar en la tabla Companys con el UUID generado
+        const queryCompany = 'INSERT INTO Companys (CompanyId, NameCompany, Codigo, Ubicacion, Email, Access_key) VALUES (?, ?, ?, ?, ?, ?)';
+        const valuesCompany = [companyId, companyData.NameCompany, randomCode, companyData.Ubicacion, companyData.Email, companyData.Access_key];
 
         await db.query(queryCompany, valuesCompany);
-        const [results] = await db.query('SELECT LAST_INSERT_ID() as CompanyId');
-        const companyId = results[0].CompanyId;
 
-        // Insertar en la tabla UserCompany
+        // Insertar en la tabla UserCompany usando el mismo UUID
         const queryUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date) VALUES (?, ?, "Administrator", NOW())';
         const valuesUserCompany = [companyId, userId];
 
         await db.query(queryUserCompany, valuesUserCompany);
 
-        return companyId;
+        return companyId; // Retorna el UUID generado
     } catch (error) {
         throw error;
     }
