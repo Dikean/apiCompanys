@@ -271,7 +271,7 @@ exports.getSalesInvocesSiigo = async (companyId , Menssages) => {
         const apiUrl = 'https://api.siigo.com/v1/invoices'; // URL de la API externa
 
         const params = {
-            created_start: '2024-02-14'
+            created_start: '2024-02-20'
         };
 
         const response = await axios.get(apiUrl, {
@@ -282,7 +282,7 @@ exports.getSalesInvocesSiigo = async (companyId , Menssages) => {
             }
         });
 
-        console.log("siigo sales invoces"+ response.data);
+        console.log("siigo sales invoces"+ JSON.stringify(response.data));
 
         const data = {
             model: "gpt-3.5-turbo",
@@ -299,7 +299,7 @@ exports.getSalesInvocesSiigo = async (companyId , Menssages) => {
           };
         // Aquí manejas la respuesta de la API y envia a Gpt
     
-        const token = "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";
+        const token = "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";
 
         return axios.post(`https://api.openai.com/v1/chat/completions`, data, {
                 headers: {
