@@ -15,10 +15,11 @@ exports.createCompany = async (req, res) => {
     try {
         const companyData = req.body;
         const localUserId = req.body.userId; 
+        const UserPhoto = req.body.UserPhoto;
+        const EmailUserSeeRol = req.body.EmailUserSeeRol; 
 
-        const companyId = await companysController.insertCompany(companyData, localUserId);
+        const companyId = await companysController.insertCompany(companyData, localUserId, UserPhoto, EmailUserSeeRol);
     
-
         res.status(201).json({ message: "Company and UserCompany created successfully", CompanyId: companyId });
     } catch (error) {
         console.error("Error al realizar la solicitud a Auth0:", error.response ? error.response.data : error);
@@ -84,7 +85,9 @@ exports.postJoinOneCompany = async (req, res) => {
     try {
         const Codigo = req.body.Codigo; 
         const UserID = req.body.UserId; 
-        const companys = await companysController.joinCompany(Codigo,UserID);
+        const UserPhoto = req.body.UserPhoto; 
+        const Email = req.body.Email; 
+        const companys = await companysController.joinCompany(Codigo,UserID,UserPhoto,Email);
         res.json(companys);
     } catch (error) {
         res.status(500).send(error.message);

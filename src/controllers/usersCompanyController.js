@@ -28,7 +28,6 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-
 exports.updateUser = async (req, res) => {
     try {
         // Lógica para actualizar un usuario
@@ -38,3 +37,44 @@ exports.updateUser = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+exports.postUserByCompanyByAdmin = async (req, res) => {
+    try {
+        const CompanyId = req.body.CompanyId;
+        const UserId = req.body.UserId;
+        const userCompanys = await usersCompanyModel.getUserAdmin(CompanyId, UserId)
+        res.json(userCompanys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+exports.getRolInCompany= async (req, res) => {
+    try {
+        const CompanyId = req.body.CompanyId;
+        const UserId = req.body.UserId;
+        const userCompanys = await usersCompanyModel.getRolInCompany(CompanyId,UserId )
+        res.json(userCompanys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+exports.deleteByCompanyUser = async (req,res) => {
+    
+    try {
+        const CompanyId = req.body.CompanyId;
+        const UserId = req.body.UserId;
+        const IntegranteId = req.body.IntegranteId;
+
+        const userCompanys = await usersCompanyModel.deleteUserByOneCompanyEspecific(CompanyId, UserId, IntegranteId)
+        res.json(userCompanys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
+
+
+

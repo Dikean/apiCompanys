@@ -15,6 +15,8 @@ exports.allDataCompanys = async () => {
 
 };
 
+
+
 // Función para generar un código aleatorio de 8 caracteres
 async function generateRandomCode(length = 8) {
     // Definir los caracteres que se pueden incluir
@@ -27,7 +29,7 @@ async function generateRandomCode(length = 8) {
     return result; // La función es asíncrona, pero esta operación es síncrona
 }
 
-exports.insertCompany = async (companyData, userId) => {
+exports.insertCompany = async (companyData, userId , UserPhoto, EmailUserSeeRol) => {
     try {
         // Generar un UUID para CompanyId
         const companyId = uuidv4();
@@ -42,8 +44,8 @@ exports.insertCompany = async (companyData, userId) => {
         await db.query(queryCompany, valuesCompany);
 
         // Insertar en la tabla UserCompany usando el mismo UUID
-        const queryUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date) VALUES (?, ?, "Administrator", NOW())';
-        const valuesUserCompany = [companyId, userId];
+        const queryUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date, UserPhoto, Email) VALUES (?, ?, "Administrator", NOW(), ?, ?)';
+        const valuesUserCompany = [companyId, userId, UserPhoto, EmailUserSeeRol];
 
         await db.query(queryUserCompany, valuesUserCompany);
 
@@ -52,6 +54,7 @@ exports.insertCompany = async (companyData, userId) => {
         throw error;
     }
 };
+
 
 exports.updateCompany = async (companyId, companyData) => {
     try {
@@ -141,7 +144,7 @@ exports.deleteDocumentById = async (companyId) => {
     }
 };
 
-exports.joinCompany = async(codigo, userId) =>{
+exports.joinCompany = async(codigo, userId, UserPhoto, Email) =>{
     try {
         // Paso 1: Verificar si existe el código y obtener el CompanyId
         const queryCheckCode = 'SELECT CompanyId FROM Companys WHERE Codigo = ?';
@@ -151,8 +154,8 @@ exports.joinCompany = async(codigo, userId) =>{
             const companyId = companyResults[0].CompanyId;
 
             // Paso 2: Insertar en la tabla UserCompany
-            const queryInsertUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date) VALUES (?, ?, "Lector", NOW())';
-            await db.query(queryInsertUserCompany, [companyId, userId]);
+            const queryInsertUserCompany = 'INSERT INTO UserCompany (CompanyId, UserId, Rol, Date, UserPhoto, Email) VALUES (?, ?, "Lector", NOW(), ?, ?)';
+            await db.query(queryInsertUserCompany, [companyId, userId,  UserPhoto, Email]);
 
             console.log(`Registro insertado correctamente con CompanyId: ${companyId} y UserId: ${userId}`);
         } else {

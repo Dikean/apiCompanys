@@ -12,7 +12,7 @@ router.put('/updateCompany',  companysController.updateCompany); //update Compan
 router.get('/byUser/:userId', checkJwt, companysController.getCompanysByUser); 
 router.get('/byCompany/:CompanyId', checkJwt, companysController.getCompanysByID); 
 router.get('/byUserCompanyChart/:userId', checkJwt, companysController.getCompanysByUserIdCity); 
-router.post('/joinOneCompany', checkJwt, companysController.postJoinOneCompany); 
+router.post('/joinOneCompany', checkJwt,companysController.postJoinOneCompany); 
 
 router.delete('/deletDocumente', checkJwt, companysController.DeleteDoumentByID); 
 
