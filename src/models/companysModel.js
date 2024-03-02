@@ -206,7 +206,7 @@ exports.uploadFileToFirebase = async (file, companyId, UserID, name, category) =
 
         // Inserta la ruta del archivo y el userID en la base de datos
         const query = "INSERT INTO Repository (CompanyId,  name, rutadelarchivo, categoria, UserId) VALUES (?, ?, ?, ?, ?)";
-        db.query(query, [companyId, "name", publicUrl, "category", UserID], (err, result) => {
+        db.query(query, [companyId, name, publicUrl, category, UserID], (err, result) => {
             if (err) throw err;
             console.log("Registro insertado en la base de datos", result);
         });
