@@ -1,6 +1,5 @@
 const db = require('../utils/db');
 
-
 async function getRolByUser(companyId, userId) {
     try {
       const query = 'SELECT Rol FROM UserCompany WHERE CompanyId = ? AND UserId = ?';
@@ -25,19 +24,35 @@ exports.findAll = async () => {
     }
 };
 
-
 exports.getRolInCompany = async (companyId, userId) => {
-    try {
-        // La consulta SQL verifica el rol basado en companyId y userId proporcionados
-        const query = 'SELECT Rol FROM UserCompany WHERE CompanyId = ? AND UserId = ?';
-        // Asegúrate de pasar companyId y userId a la consulta
-        const [rows] = await db.query(query, [companyId, userId]);
-        // Retorna el rol si se encuentra, de lo contrario retorna null
-        return rows.length > 0 ? rows[0].Rol : null;
-    } catch (error) {
-        // Maneja cualquier error que ocurra durante la ejecución de la consulta
-        throw error;
-    }
+  try {
+    const query = 'SELECT Rol FROM UserCompany WHERE CompanyId = ? AND UserId = ?';
+    const [rows] = await db.query(query, [companyId, userId]);
+    return rows.length > 0 ? rows[0].Rol : null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.updateRolInCompany = async (companyId, userId, IntegranteId, NewRol) => {
+  try {
+      // Primero, verifica el rol del usuario que realiza la acción
+      const query = 'SELECT Rol FROM UserCompany WHERE CompanyId = ? AND UserId = ?';
+      const [rows] = await db.query(query, [companyId, userId]);
+      const rolUsuario = rows.length > 0 ? rows[0].Rol : null;
+      
+      if (rolUsuario === 'Administrator') {
+          // Si el usuario es un Administrador, procede a actualizar el rol del integrante
+          const updateQuery = 'UPDATE UserCompany SET Rol = ? WHERE CompanyId = ? AND UserId = ?';
+          await db.query(updateQuery, [NewRol, companyId, IntegranteId]);
+          return 'Rol actualizado con éxito';
+      } else {
+          // Si el usuario no es un Administrador, no permite la actualización
+          return 'No autorizado para actualizar el rol';
+      }
+  } catch (error) {
+      throw error;
+  }
 };
 
 exports.userAsociateByCompany = async () => {
@@ -52,7 +67,7 @@ exports.userAsociateByCompany = async () => {
 
         // Ejecutar la consulta preparada
         const [results] = await db.query(sql); // Aquí no se pasan parámetros porque la consulta no los requiere
-
+   
         return results;
     } catch (error) {
         throw error;
@@ -73,11 +88,17 @@ exports.getUserAdmin = async (companyId, userId) => {
     } catch (error) {
       throw error;
     }
-  };
+};
 
 exports.deleteUserByOneCompanyEspecific = async(companyId, userId, integranteId) =>{
     try {
-      const rolUsuario = await getRolByUser(companyId, userId);
+
+      const query = 'SELECT Rol FROM UserCompany WHERE CompanyId = ? AND UserId = ?';
+      const [rows] = await db.query(query, [companyId, userId]);
+      const rolUsuario = rows.length > 0 ? rows[0].Rol : null;
+    
+      console.log("My rol"+rolUsuario);
+
       if (rolUsuario === 'Administrator') {
 
           // Lógica para eliminar un integrante
@@ -91,7 +112,7 @@ exports.deleteUserByOneCompanyEspecific = async(companyId, userId, integranteId)
     } catch (error) {
       throw error;
     }
-  }
+};
   
   
 

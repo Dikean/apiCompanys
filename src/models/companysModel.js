@@ -16,7 +16,6 @@ exports.allDataCompanys = async () => {
 };
 
 
-
 // Función para generar un código aleatorio de 8 caracteres
 async function generateRandomCode(length = 8) {
     // Definir los caracteres que se pueden incluir
@@ -79,6 +78,13 @@ exports.getCompanysByUserId = async (userId) => {
             WHERE UserCompany.UserId = ?
         `;
         const [companys] = await db.query(query, [userId]);
+         
+        // Verifica si el arreglo de compañías está vacío
+        if (companys.length === 0) {
+           // Puedes devolver un mensaje o manejar la situación como prefieras
+           return {message: "You have not Companys"} ;
+        }
+
         return companys;
     } catch (error) {
         throw error;

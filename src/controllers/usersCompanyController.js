@@ -42,6 +42,7 @@ exports.postUserByCompanyByAdmin = async (req, res) => {
     try {
         const CompanyId = req.body.CompanyId;
         const UserId = req.body.UserId;
+
         const userCompanys = await usersCompanyModel.getUserAdmin(CompanyId, UserId)
         res.json(userCompanys);
     } catch (error) {
@@ -49,11 +50,27 @@ exports.postUserByCompanyByAdmin = async (req, res) => {
     }
 };
 
+
 exports.getRolInCompany= async (req, res) => {
     try {
         const CompanyId = req.body.CompanyId;
         const UserId = req.body.UserId;
+
         const userCompanys = await usersCompanyModel.getRolInCompany(CompanyId,UserId )
+        res.json(userCompanys);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+exports.updateRolInCompany= async (req, res) => {
+    try {
+        const CompanyId = req.body.CompanyId;
+        const UserId = req.body.UserId;
+        const IntegranteId = req.body.IntegranteId;
+        const NewRol = req.body.Rol;
+
+        const userCompanys = await usersCompanyModel.updateRolInCompany(CompanyId,UserId, IntegranteId, NewRol )
         res.json(userCompanys);
     } catch (error) {
         res.status(500).send(error.message);
