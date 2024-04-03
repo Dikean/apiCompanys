@@ -23,9 +23,9 @@ app.use(express.json());
 // Configurar CORS para permitir solicitudes de cualquier origen
 app.use(cors());
 
-// app.use(cors({
-//     origin: 'https://autoconta.online'
-// }));
+app.use(cors({
+    origin: 'https://autoconta.online'
+ }));
 
 
 // Usar rutas
